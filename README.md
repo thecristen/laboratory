@@ -8,12 +8,22 @@ in their Plug-based web apps.
 First, add `:laboratory` to your app's mix.exs file.
 Next, add the features that need to be toggled inside `config/config.exs`:
 
-```
+```elixir
 config :laboratory,
   features: [
     {:homepage_redesign, "Homepage Redesign", "This turns on the shiny new homepage design!"},
     {:feature_id_in_cookie, "Feature name", "Feature description"}
     etc ..
+  ]
+```
+
+You can also specify options for the cookie:
+
+```elixir
+config :laboratory,
+  cookie: [
+    max_age: 86_400
+    http_only: true
   ]
 ```
 

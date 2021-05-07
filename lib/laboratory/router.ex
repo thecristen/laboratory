@@ -13,7 +13,9 @@ defmodule Laboratory.Router do
 
     conn
     |> put_resp_content_type("text/html")
-    |> send_resp(200, template(features(conn), path))
+    # |> send_resp(200, template(features(conn), path))
+    |> resp(200, template(features(conn), path))
+    |> send_resp
   end
 
   post "/disable/:id" do
@@ -21,7 +23,12 @@ defmodule Laboratory.Router do
   end
 
   post "/enable/:id" do
-    conn |> put_resp_cookie(id, "true") |> redirect_back
+    opts = Application.get_env(:laboratory, :cookie, [])
+    conn |> put_resp_cookie(id, "true", opts) |> redirect_back
+  end
+
+  match _ do
+    send_resp(conn, 404, "")
   end
 
   EEx.function_from_file :def, :template, "lib/laboratory/index.eex", [:features, :path]
